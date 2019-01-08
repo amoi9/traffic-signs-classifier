@@ -88,21 +88,25 @@ To train the model, I used an Adam optimizer, with batch size = 32, epochs = 16,
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of 99.5%
-* validation set accuracy of 96.1%
-* test set accuracy of 94.0%
+* training set accuracy of 99.4%
+* validation set accuracy of 94.4%
+* test set accuracy of 94.1%
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+The LeNet architecture was choosen, that's the suggested starting point, which is from a paper discussing document 
+recognition. The architecture for alphebet recognition feels like can be well reused for traffic signs recognition. 
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+The validation accuracy was below 90% with the original architecture. I added dropouts to each layer but the last one, 
+which helped to hit 93%. 
+
+I then adjusted the epochs from 10 to 16 to see how far away the validation accuracy can increase, then I noticed it stopped 
+growing at about epoch 12, so I change to that number. I changed batch number from 128 to 32, the smaller batch number
+increased validation accuracy. I also tuned the `keep_prob` from 0.5 to 0.7 which helped the validation accuracy too.
+
+To recognize a sign we learn features from a small area to start with and build up from there, convolution layers does 
+this pattern of learning well. 
+ 
+Dropouts forces the network to learn a redundant representation of things to make sure the network doesn't rely on any
+single feature. reduces overfit to the training data, 
  
 
 ### Test a Model on New Images
@@ -126,18 +130,23 @@ Here are the results of the prediction:
 |Ahead only    			| Ahead only										|
 | Speed limit (30km/h)				| Speed limit (30km/h)										|
 | Pedestrians      		| Pedestrians					 				|
-| Roundabout mandatory		| Roundabout mandatory     							|
+| Roundabout mandatory		| Children crossing     							|
 
 
-The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably 
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 80%%. This compares lower 
 to the accuracy on the test set of 94.0%.
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction.
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first four images, the model is relatively sure about the prediction, with > 99% probabilty each, with the last 
-one being 37.7%. So here I'm only showing a barchart visualization for the last sign:
+For the first four images, the model is relatively sure about the prediction, with > 94% probabilty each. 
+
+But the last one's top probability is 25.3%, with the correct prediction being the second probability of 24.8%. This one 
+might be hard to predict due to the three-part circle can be confused with a triangle sign. Augmenting the training data
+may help with this.
+  
+Here I'm only showing a barchart visualization for the last sign:
 
 ![alt text][sign40]
 
@@ -146,57 +155,57 @@ Below are the detailed softmax probablities.
 
 Priority road:
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-|0.9940363|Priority road|
-|0.0054931|Roundabout mandatory|
-|0.0001249|Right-of-way at the next intersection|
-|0.0000847|No passing|
-|0.0000683|End of no passing|
+| Probability|Prediction | 
+|:---------------------:|:---------------------------------------------:|
+|0.9895009|Priority road|
+|0.0103144|Roundabout mandatory|
+|0.0001050|Speed limit (100km/h)|
+|0.0000236|End of no passing by vehicles over 3.5 metric tons|
+|0.0000195|Right-of-way at the next intersection|
 
 Ahead only:
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-|0.9999952|Ahead only|
-|0.0000044|Go straight or right|
-|0.0000004|Speed limit (60km/h)|
-|0.0000001|Turn left ahead|
-|0.0000000|Yield|
+| Probability|Prediction | 
+|:---------------------:|:---------------------------------------------:|
+|1.0000000|Ahead only|
+|0.0000000|No passing|
+|0.0000000|Turn left ahead|
+|0.0000000|No vehicles|
+|0.0000000|Speed limit (60km/h)|
 
 Speed limit (30km/h):
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-|0.9999998|Speed limit (30km/h)|
-|0.0000002|Speed limit (50km/h)|
-|0.0000001|Speed limit (20km/h)|
+| Probability|Prediction | 
+|:---------------------:|:---------------------------------------------:|
+|0.9999628|Speed limit (30km/h)|
+|0.0000231|Speed limit (50km/h)|
+|0.0000142|Speed limit (20km/h)|
 |0.0000000|Speed limit (70km/h)|
-|0.0000000|Speed limit (60km/h)|
+|0.0000000|Speed limit (80km/h)|
 
 Pedestrians:
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-|0.9909671|Pedestrians|
-|0.0044251|Children crossing|
-|0.0029852|Right-of-way at the next intersection|
-|0.0007451|Road narrows on the right|
-|0.0005997|General caution|
+| Probability|Prediction | 
+|:---------------------:|:---------------------------------------------:|
+|0.9451081|Pedestrians|
+|0.0312274|General caution|
+|0.0119253|Right-of-way at the next intersection|
+|0.0071728|Road narrows on the right|
+|0.0026724|Double curve|
 
 Roundabout mandatory:
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-|0.3769366|Roundabout mandatory|
-|0.2826695|Priority road|
-|0.0591221|End of all speed and passing limits|
-|0.0540391|Right-of-way at the next intersection|
-|0.0459142|Speed limit (120km/h)| 
+| Probability|Prediction | 
+|:---------------------:|:---------------------------------------------:|
+|0.2534083|Children crossing|
+|0.2475823|Roundabout mandatory|
+|0.1855018|Right-of-way at the next intersection|
+|0.0582902|Priority road|
+|0.0479320|General caution| 
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
+### (Optional) Visualizing the Neural Network.
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
-The visualized internal state of the second convolutional layer is this:
+The visualized internal state after the second convolutional layer is this:
 
 ![alt text][visual]
