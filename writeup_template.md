@@ -83,7 +83,8 @@ My final model consisted of the following layers:
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an Adam optimizer, with batch size = 32, epochs = 16, and learning rate = 0.001.
+To train the model, I used an Adam optimizer, with batch size = 32, epochs = 12, learning rate = 0.001, and keep probability
+of 0.7 for the dropout layers.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
@@ -117,10 +118,16 @@ Here are five German traffic signs that I found on the web:
 
 ![alt text][signs]
 
-The first image might be difficult to classify because ...
+Difficulty:
+ 1. Two layers of diamond shapes, one inside the other.
+ 2. Shape is similar to "Go straight or right" or "Go straight or left" signs.
+ 3. Various speed limit signs of the similar shape, so need to recognize the number inside.
+ 4. Can be confused with any other side with an outer triangle, e.g. the "Children crossing" sign has two humans inside 
+    the triangle.
+ 5. The three-part circle can be confused with any other triangle sign.
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set.
- (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+ ### (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
@@ -133,12 +140,26 @@ Here are the results of the prediction:
 | Roundabout mandatory		| Children crossing     							|
 
 
-The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 80%%. This compares lower 
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares lower 
 to the accuracy on the test set of 94.0%.
+
+I calculated the precision and recall of the test dataset in the 22nd and 23rd cell of the notebook. The result is as follow:
+
+| Image | Precision |Recall |
+|:---------------------:|:-----------------:|:---:| 
+|Priority road|0.963|0.981|
+|Ahead only|0.995|0.974|
+|Speed limit (30km/h)|0.938|0.990|
+|Pedestrians|0.750|0.500|
+|Roundabout mandatory|0.925|0.822|
+|Children crossing|0.948|0.967|
+
+For the test dataset "Pedestrians" has a low precision and recall, however the test image got recognized correctly.
+The opposite is true for "Roundabout mandatory".
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction.
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 17th cell of the Ipython notebook.
 
 For the first four images, the model is relatively sure about the prediction, with > 94% probabilty each. 
 
