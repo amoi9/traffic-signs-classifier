@@ -4,15 +4,11 @@
 
 [sample]: ./output/sample.png "Sample"
 [distribution]: ./output/distribution.png "Distribution"
-[grayscale]: ./output/grayscale.png "Grayscaling"
+[greyscale]: ./output/greyscale.png "Grayscaling"
 [normalized]: ./output/normalized.png "Normalized"
 [sign40]: ./output/sign40.png "Sign40"
 [visual]: ./output/visual.png "Visualization"
-[image4]: ./00027.ppm "Traffic Sign 1"
-[image5]: ./06357.ppm "Traffic Sign 2"
-[image6]: ./07261.ppm "Traffic Sign 3"
-[image7]: ./00020.ppm "Traffic Sign 4"
-[image8]: ./00029.ppm "Traffic Sign 5"
+[signs]: ./output/signs.png "Signs"
 
 Here is a link to my [project code](https://github.com/amoi9/traffic-signs-classifier/blob/master/Traffic_Sign_Classifier.ipynb), 
 and the [HTML file](https://github.com/amoi9/traffic-signs-classifier/blob/master/Traffic_Sign_Classifier.html)
@@ -50,7 +46,7 @@ distribution of the labels in each dataset are similar, especailly between the t
 As a first step, I decided to convert the images to grayscale because this removes the color information 
 which isn't really a factor to our classification. Here is an example of a traffic sign image before and after grayscaling.
 
-![alt text][grayscale]
+![alt text][greyscale]
 
 As a last step, I normalized the image data so that our training data has a similar range. CNNs share parameters, if the
 data doesn't have a similar range sharing can't happen too easily - a weight to one part may be a lot or too small to another part.
@@ -115,8 +111,7 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][signs]
 
 The first image might be difficult to classify because ...
 
